@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch.nn.parameter import Parameter
 
-from coordconv import CoordConv, AddCoords
+from .coordconv import CoordConv, AddCoords
 
 '''
 An alternative implementation for PyTorch with auto-infering the x-y dimensions.
@@ -47,9 +47,7 @@ class AddSine(AddCoords):
         """
 
         xx_channel = self.generate_xy(input_tensor)
-        ret = torch.cat([
-            input_tensor,
-            xx_channel.type_as(input_tensor)], dim=1)
+        ret = torch.cat((input_tensor, xx_channel.type_as(input_tensor)), dim=1)
 
         return ret
 

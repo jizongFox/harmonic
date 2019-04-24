@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from harmonic import SinConv
+from admm_research.postprocessing._viewer import multi_slice_viewer
 
 
 class double_conv(nn.Module):
@@ -48,16 +49,15 @@ class ups(nn.Module):
         self.conv = double_conv(out_ch, out_ch)
 
     def forward(self, x1, x2):
-        #x1 = F.interpolate(x1, scale_factor=2, mode='bilinear', align_corners=True)
+        # x1 = F.interpolate(x1, scale_factor=2, mode='bilinear', align_corners=True)
         x1 = F.upsample(x1, scale_factor=2, mode='bilinear', align_corners=True)
         diffX = x1.size()[2] - x2.size()[2]
         diffY = x1.size()[3] - x2.size()[3]
-        x2 = F.pad(x2, (diffX // 2, int(diffX / 2),
-                        diffY // 2, int(diffY / 2)))
+        x2 = F.pad(x2, (diffX // 2, int(diffX / 2), diffY // 2, int(diffY / 2)))  # type: ignore
         x = torch.cat([x2, x1], dim=1)
-        x = self.sinconv(x)
-        x = self.conv(x)
-        return x
+        x_after_sin = self.sinconv(x)
+        x_after_conv = self.conv(x_after_sin)
+        return x_after_conv
 
 
 class inconv(nn.Module):

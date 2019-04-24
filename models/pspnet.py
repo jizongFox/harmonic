@@ -4,8 +4,7 @@ from harmonic import SinConv
 from torch import nn
 from torch.nn import functional as F
 
-import extractors
-
+from . import extractors
 
 class PSPModule(nn.Module):
     def __init__(self, features, out_features=1024, sizes=(1, 2, 3, 6)):

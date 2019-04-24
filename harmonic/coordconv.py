@@ -37,10 +37,14 @@ class AddCoords(nn.Module):
         """
 
         xx_channel, yy_channel = self.generate_xy(input_tensor)
-        ret = torch.cat([
-            input_tensor,
-            xx_channel.type_as(input_tensor),
-            yy_channel.type_as(input_tensor)], dim=1)
+        ret = torch.cat(
+            (
+                input_tensor,
+                xx_channel.type_as(input_tensor),
+                yy_channel.type_as(input_tensor)
+            ),
+            dim=1
+        )
 
         return ret
 

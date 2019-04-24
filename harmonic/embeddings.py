@@ -129,7 +129,7 @@ class Embedding(object):
         :param niter: number of optimization iterations
         :return: it updates internal states of the Embedder and return sins params as list and errors
         """
-        assert isinstance(ground_truth_labels,torch.Tensor), "Expected ground_truth_labels as torch.Tensor"
+        assert isinstance(ground_truth_labels, torch.Tensor), "Expected ground_truth_labels as torch.Tensor"
         assert 3 == len(ground_truth_labels.shape), "ground_truth_labels should be in foramt [BSxWxH]"
         # Re arrange data from 1 to N (important for the loss function)
         numpy_gt = torch.zeros_like(ground_truth_labels)
